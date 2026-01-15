@@ -25,7 +25,8 @@
 
         #game-box { 
             background: white; 
-            padding: 2rem; 
+            /* Significantly decreased top padding to 0.5rem */
+            padding: 0.5rem 2rem 2rem 2rem; 
             border-radius: 16px; 
             box-shadow: 0 10px 30px rgba(0,0,0,0.08); 
             width: 95%; 
@@ -123,17 +124,15 @@
 <body>
 
 <div id="game-box">
-    <!-- Login Screen -->
     <div id="login-screen">
-        <div style="font-size: 3rem; margin-bottom: 10px;">🐝</div>
-        <h2 style="color: var(--dark); margin-top: 0;">Spelling Bee</h2>
+        <div style="font-size: 3rem; margin-top: 10px; margin-bottom: 5px;">🐝</div>
+        <h2 style="color: var(--dark); margin-top: 0; margin-bottom: 10px;">Spelling Bee</h2>
         <p style="color: #64748b; margin-bottom: 20px;">Master the word list and track your progress.</p>
         <input type="text" id="user-name" placeholder="Enter Student Name" autofocus>
         <br><br>
         <button onclick="startSession()">Start Practice</button>
     </div>
 
-    <!-- Game Screen -->
     <div id="game-screen" class="hidden">
         <div class="stats-container">
             <div class="stats-grid">
@@ -261,14 +260,10 @@
         
         currentWord = wordList[Math.floor(Math.random() * wordList.length)];
         
-        // Puzzle Logic: Blanks MUST be less than filled letters
         const maxBlanks = Math.floor((currentWord.length - 1) / 2);
         let wordArray = currentWord.split('');
         
-        // Create eligible indices for blanks, explicitly excluding 0 (first letter)
         let eligibleIndices = Array.from({length: wordArray.length}, (_, i) => i).filter(i => i !== 0);
-        
-        // Randomize eligible indices
         eligibleIndices.sort(() => Math.random() - 0.5);
 
         let blanksCount = 0;
@@ -281,7 +276,6 @@
             }
         }
 
-        // Force at least one blank from the eligible set
         if (blanksCount === 0 && eligibleIndices.length > 0) {
             puzzleArray[eligibleIndices[0]] = "_";
         }
