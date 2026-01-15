@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spelling Bee - Mastery Edition</title>
+    <style>
+        :root {
+            --primary: #3498db;
+            --success: #27ae60;
+            --error: #e74c3c;
+            --dark: #2c3e50;
+            --light: #f4f7f6;
+        }
+
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: var(--light); 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            margin: 0; 
+        }
+
+        #game-box { 
+            background: white; 
+            padding: 2rem; 
+            border-radius: 16px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08); 
+            width: 95%; 
+            max-width: 500px; 
+            text-align: center; 
+        }
+
+        .hidden { display: none; }
+
+        .stats-container {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .stats-grid { 
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            font-weight: bold; 
+        }
+
+        .stat-item { display: flex; flex-direction: column; font-size: 0.9rem; }
+        .stat-value { font-size: 1.2rem; margin-top: 4px; }
+        
+        .correct { color: var(--success); }
+        .wrong { color: var(--error); }
+        .percentage { color: var(--primary); }
+
+        input[type="text"] { 
+            padding: 14px; 
+            width: 85%; 
+            font-size: 1.2rem; 
+            border: 2px solid #cbd5e1; 
+            border-radius: 10px; 
+            margin: 15px 0; 
+            outline: none; 
+            text-align: center; 
+            transition: border-color 0.2s;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--primary);
+        }
+
+        button { 
+            background: var(--primary); 
+            color: white; 
+            border: none; 
+            padding: 14px 28px; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            font-size: 1.1rem; 
+            font-weight: 600;
+            transition: transform 0.1s, background 0.2s;
+        }
+
+        button:hover { background: #2980b9; }
+        button:active { transform: scale(0.98); }
+
+        .word-puzzle { 
+            font-size: 2.5rem; 
+            letter-spacing: 8px; 
+            font-family: 'Courier New', Courier, monospace; 
+            margin: 25px 0; 
+            color: var(--dark); 
+            font-weight: bold;
+        }
+
+        .hint-box { 
+            background: #fffbeb; 
+            padding: 15px; 
+            border-radius: 10px; 
+            font-style: italic; 
+            color: #92400e; 
+            margin-bottom: 20px; 
+            min-height: 50px; 
+            font-size: 0.95rem;
+            border-left: 4px solid #f59e0b;
+        }
+
+        #feedback { 
+            margin: 15px 0; 
+            font-weight: bold; 
+            height: 24px; 
+            font-size: 1.1rem;
+        }
+        
+        .loading-dots:after { content: ' .'; animation: dots 1s steps(5, end) infinite;}
+        @keyframes dots { 0%, 20% { content: ' .'; } 40% { content: ' ..'; } 60% { content: ' ...'; } 80%, 100% { content: ''; } }
+    </style>
+</head>
+<body>
+
+<div id="game-box">
+    <!-- Login Screen -->
+    <div id="login-screen">
+        <div style="font-size: 3rem; margin-bottom: 10px;">🐝</div>
+        <h2 style="color: var(--dark); margin-top: 0;">Spelling Bee</h2>
+        <p style="color: #64748b; margin-bottom: 20px;">Master the word list and track your progress.</p>
+        <input type="text" id="user-name" placeholder="Enter Student Name" autofocus>
+        <br><br>
+        <button onclick="startSession()">Start Practice</button>
+    </div>
+
+    <!-- Game Screen -->
+    <div id="game-screen" class="hidden">
+        <div class="stats-container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span>Correct</span>
+                    <span id="count-right" class="stat-value correct">0</span>
+                </div>
+                <div class="stat-item">
+                    <span>Wrong</span>
+                    <span id="count-wrong" class="stat-value wrong">0</span>
+                </div>
+                <div class="stat-item">
+                    <span>Accuracy</span>
+                    <span id="accuracy-display" class="stat-value percentage">0%</span>
+                </div>
+            </div>
+        </div>
+        
+        <p style="color: #64748b; margin-top: 0;">Student: <strong id="player-display" style="color: var(--dark);"></strong></p>
+
+        <div class="word-puzzle" id="puzzle-text"></div>
+        <div class="hint-box" id="hint-text">Getting hint...</div>
+
+        <input type="text" id="user-entry" placeholder="Type the full word" autocomplete="off">
+        <div id="feedback"></div>
+
+        <div style="margin-top: 10px;">
+            <button id="btn-submit" onclick="checkSpelling()">Submit Answer</button>
+            <button id="btn-next" class="hidden" onclick="nextWord()">Next Word ➔</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const wordList = [
+        "Abdomen", "Ability", "Abolish", "Abroad", "Abrupt", "Absence", "Absent", "Absorb", "Absurd", "Academy", "Accent", "Accept", "Access", "Accurate", "Achieve", "Across", "Actual", "Addition", "Admit", "Adult", "Advice", "Affect", "Afford", "Afraid", "Against", "Alight", "Almost", "Almond", "Already", "Ambition", "Amnesia", "Amount", "Anchor", "Ancient", "Annual", "Another", "Answer", "Anxious", "Appeal", "Appear", "Append", "Applaud", "Apply", "Appoint", "Aquatic", "Arcade", "Around", "Arrange", "Arrest", "Arrive", "Ascend", "Assist", "Athlete", "Attack", "Attend", "Author", "Autumn", "Avenue",
+        "Bachelor", "Bacteria", "Baggage", "Balance", "Balcony", "Bandage", "Barely", "Barrel", "Barrier", "Barrow", "Battery", "Battle", "Because", "Beginner", "Behind", "Believe", "Bellow", "Beneath", "Biology", "Bitterly", "Bladder", "Blunder", "Bottom", "Boulder", "Breach", "Breadth", "Breakfast", "Breath", "Breeze", "Bright", "Brilliant", "Brutal", "Bumper", "Bundle", "Burrow", "Butcher",
+        "Calculate", "Carbon", "Carnivore", "Celebrate", "Centre", "Chapter", "Cheetah", "Chimney", "Chuckle", "Church", "Circle", "Citizen", "Climate", "Climax", "College", "Column", "Combat", "Command", "Common", "Complain", "Complete", "Conceal", "Concept", "Concert", "Connect", "Construct", "Consumer", "Continue", "Contract", "Control", "Copper", "Corridor", "Cottage", "Country", "Couple", "Courage", "Course", "Cranium", "Creature", "Crucial", "Current", "Cutlery", "Cyclone", "Cylinder",
+        "Daughter", "Deadly", "Defect", "Deliver", "Deposit", "Design", "Desire", "Device", "Diagram", "Dialogue", "Difference", "Digestion", "Direction", "Discover", "Disease", "Distance", "Division", "Dolphin", "Donation", "Drought",
+        "Edible", "Electron", "Elliptical", "Energy", "Engineer", "Entrance", "Equation", "Escalator", "Escape", "Establish", "Excess", "Excretion", "Excuse", "Expand", "Expensive", "Expert",
+        "Failure", "Familiar", "Famous", "Feather", "Feeble", "Ferocious", "Feverish", "Flexible", "Floral", "Florist", "Fortune", "Fountain", "Fracture", "Furniture",
+        "Galaxy", "Gallery", "Garage", "Garbage", "Garment", "Gather", "General", "Generate", "Genius", "Gloomy", "Glutton", "Gradual", "Graduate", "Gravel", "Grease", "Grinder", "Grocery", "Growth", "Guidance",
+        "Habitat", "Hamper", "Harbour", "Hardly", "Harmful", "Hazard", "Hearty", "Herbivore", "History", "Hoarse", "Hollow", "Horror", "Humidity", "Hydrogen",
+        "Identity", "Ignore", "Imitate", "Immoral", "Immune", "Impolite", "Improve", "Include", "Increase", "Inform", "Injection", "Injury", "Innocent", "Inspect", "Install", "Intellect", "Intention", "Irritate", "Isolate",
+        "Jealous", "Jocular", "Journal", "Journey", "Jovial", "Jumble", "Junction", "Justice",
+        "Kidney", "Kingdom", "Knuckle",
+        "Launch", "Lawyer", "Lecture", "Leopard", "Liquid", "Luxury",
+        "Machine", "Manner", "Manual", "Massive", "Material", "Matter", "Meadow", "Measure", "Medicine", "Memory", "Message", "Method", "Mineral", "Model", "Modern", "Moment", "Monsoon", "Mosque", "Multiply", "Murmur", "Muscle",
+        "Narrow", "National", "Natural", "Navigate", "Neglect", "Nephew",
+        "Observe", "Omnivore", "Operate", "Operation", "Ordinary", "Organism", "Oxygen",
+        "Parallel", "Parasite", "Particle", "Peasant", "Penalty", "Perfect", "Perform", "Perfume", "Pigment", "Pleasant", "Plenty", "Polite", "Popular", "Position", "Positive", "Poverty", "Practice", "Precise", "Predator", "Pressure", "Pretty", "Prevent", "Previous", "Probable", "Produce", "Product", "Proper", "Property", "Protein", "Provide", "Provision", "Puppet", "Purely", "Purple", "Puzzle",
+        "Quality", "Quantity", "Quarrel", "Quarter", "Queer", "Quickly", "Quiet", "Quit", "Quotient",
+        "Rarely", "Reaction", "Realize", "Receive", "Recent", "Rejoice", "Relevant", "Remedy", "Remote", "Repair", "Rescue", "Reservoir", "Retina",
+        "Sacred", "Saddle", "Scanty", "Scarcely", "Scatter", "Scholar", "Scratch", "Scribble", "Search", "Selection", "Shallow", "Sincere", "Skeleton", "Solicit", "Solitary", "Sorrow", "Source", "Sphere", "Spinster", "Spread", "Square", "Stomach", "Strategy", "Streak", "Subtle", "Substance",
+        "Tremble", "Treasure", "Triangle", "Turbine",
+        "Ultimate", "Umpire",
+        "Vaccinate", "Vacuum", "Valuable", "Ventilate", "Vitamin", "Volume", "Vulgar",
+        "Weapon", "Weather", "Weight", "Whimper", "Wretched", "Wriggle",
+        "Zealot", "Zealous", "Zenith", "Zillion"
+    ];
+
+    let currentWord = "";
+    let scoreRight = parseInt(localStorage.getItem('sb_right')) || 0;
+    let scoreWrong = parseInt(localStorage.getItem('sb_wrong')) || 0;
+
+    window.onload = function() {
+        const savedName = localStorage.getItem('sb_name');
+        if (savedName) {
+            document.getElementById('user-name').value = savedName;
+            startSession();
+        }
+    };
+
+    function updateStats() {
+        document.getElementById('count-right').innerText = scoreRight;
+        document.getElementById('count-wrong').innerText = scoreWrong;
+        
+        const total = scoreRight + scoreWrong;
+        const accuracy = total === 0 ? 0 : Math.round((scoreRight / total) * 100);
+        document.getElementById('accuracy-display').innerText = accuracy + "%";
+        
+        localStorage.setItem('sb_right', scoreRight);
+        localStorage.setItem('sb_wrong', scoreWrong);
+    }
+
+    function startSession() {
+        const name = document.getElementById('user-name').value.trim();
+        if (!name) return alert("Please enter a student name!");
+        
+        localStorage.setItem('sb_name', name);
+        document.getElementById('player-display').innerText = name;
+        
+        document.getElementById('login-screen').className = "hidden";
+        document.getElementById('game-screen').className = "";
+        
+        updateStats();
+        nextWord();
+    }
+
+    async function fetchMeaning(word) {
+        const hintEl = document.getElementById('hint-text');
+        hintEl.innerHTML = '<span class="loading-dots">Searching dictionary</span>';
+        
+        try {
+            const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
+            const data = await response.json();
+            
+            if (data[0] && data[0].meanings[0]) {
+                const def = data[0].meanings[0].definitions[0].definition;
+                hintEl.innerText = "Definition: " + def;
+            } else {
+                hintEl.innerText = "Hint: A common English word from the mastery list.";
+            }
+        } catch (error) {
+            hintEl.innerText = "Definition: (Currently unavailable)";
+        }
+    }
+
+    function nextWord() {
+        document.getElementById('feedback').innerText = "";
+        document.getElementById('user-entry').value = "";
+        document.getElementById('user-entry').disabled = false;
+        document.getElementById('btn-submit').classList.remove('hidden');
+        document.getElementById('btn-next').classList.add('hidden');
+        
+        currentWord = wordList[Math.floor(Math.random() * wordList.length)];
+        
+        // Puzzle Logic: Blanks MUST be less than filled letters
+        const maxBlanks = Math.floor((currentWord.length - 1) / 2);
+        let wordArray = currentWord.split('');
+        
+        // Create eligible indices for blanks, explicitly excluding 0 (first letter)
+        let eligibleIndices = Array.from({length: wordArray.length}, (_, i) => i).filter(i => i !== 0);
+        
+        // Randomize eligible indices
+        eligibleIndices.sort(() => Math.random() - 0.5);
+
+        let blanksCount = 0;
+        let puzzleArray = [...wordArray];
+
+        for (let i = 0; i < eligibleIndices.length; i++) {
+            if (blanksCount < maxBlanks && Math.random() > 0.4) {
+                puzzleArray[eligibleIndices[i]] = "_";
+                blanksCount++;
+            }
+        }
+
+        // Force at least one blank from the eligible set
+        if (blanksCount === 0 && eligibleIndices.length > 0) {
+            puzzleArray[eligibleIndices[0]] = "_";
+        }
+
+        document.getElementById('puzzle-text').innerText = puzzleArray.join('');
+        fetchMeaning(currentWord);
+        document.getElementById('user-entry').focus();
+    }
+
+    function checkSpelling() {
+        const attempt = document.getElementById('user-entry').value.trim().toLowerCase();
+        const feedback = document.getElementById('feedback');
+        
+        if (!attempt) return;
+
+        if (attempt === currentWord.toLowerCase()) {
+            feedback.innerText = "✨ Correct! You spelled it right.";
+            feedback.style.color = "var(--success)";
+            scoreRight++;
+        } else {
+            feedback.innerHTML = `❌ Incorrect. Correct: <span style="color:var(--dark)">${currentWord}</span>`;
+            feedback.style.color = "var(--error)";
+            scoreWrong++;
+        }
+
+        updateStats();
+        document.getElementById('user-entry').disabled = true;
+        document.getElementById('btn-submit').classList.add('hidden');
+        document.getElementById('btn-next').classList.remove('hidden');
+    }
+
+    document.getElementById("user-entry").addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+            if (document.getElementById('btn-submit').classList.contains('hidden')) {
+                nextWord();
+            } else {
+                checkSpelling();
+            }
+        }
+    });
+</script>
+
+</body>
+</html>
