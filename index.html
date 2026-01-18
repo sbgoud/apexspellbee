@@ -30,7 +30,7 @@
             border-radius: 16px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.08);
             width: 95%;
-            max-width: 600px; /* Increased width slightly to fit new stats */
+            max-width: 700px; /* Widened to fit 6 columns comfortably */
             text-align: center;
             margin-top: 0;
         }
@@ -47,8 +47,8 @@
 
         .stats-grid { 
             display: grid;
-            /* Changed from 3 columns to 5 columns */
-            grid-template-columns: repeat(5, 1fr);
+            /* Now 6 columns to fit Correct, Wrong, Acc, T90, T95, T98 */
+            grid-template-columns: repeat(6, 1fr);
             gap: 5px;
             font-weight: bold; 
         }
@@ -56,7 +56,7 @@
         .stat-item { 
             display: flex; 
             flex-direction: column; 
-            font-size: 0.75rem; /* Slightly smaller font to fit 5 cols */
+            font-size: 0.75rem; 
             justify-content: flex-start;
         }
 
@@ -65,7 +65,8 @@
         .correct { color: var(--success); }
         .wrong { color: var(--error); }
         .percentage { color: var(--primary); }
-        .target { color: #8e44ad; } /* Purple for targets */
+        
+        /* Specific target styles handled inline in JS now for colors */
 
         input[type="text"] { 
             padding: 14px; 
@@ -126,10 +127,11 @@
             font-size: 1.1rem;
         }
         
-        /* Mobile adjustment for stats */
-        @media (max-width: 480px) {
+        @media (max-width: 600px) {
             .stat-value { font-size: 0.9rem; }
             .stat-item span:first-child { font-size: 0.65rem; }
+            .stats-grid { gap: 2px; }
+            #game-box { padding-left: 1rem; padding-right: 1rem; }
         }
     </style>
 </head>
@@ -160,13 +162,18 @@
                     <span>Accuracy</span>
                     <span id="accuracy-display" class="stat-value percentage">0%</span>
                 </div>
+                
+                <div class="stat-item">
+                    <span>Target 90%</span>
+                    <span id="target-90" class="stat-value">0/0</span>
+                </div>
                 <div class="stat-item">
                     <span>Target 95%</span>
-                    <span id="target-95" class="stat-value target">0/0</span>
+                    <span id="target-95" class="stat-value">0/0</span>
                 </div>
                 <div class="stat-item">
                     <span>Target 98%</span>
-                    <span id="target-98" class="stat-value target">0/0</span>
+                    <span id="target-98" class="stat-value">0/0</span>
                 </div>
             </div>
         </div>
@@ -213,17 +220,22 @@
         const accuracy = total === 0 ? 0 : Math.round((scoreRight / total) * 100);
         document.getElementById('accuracy-display').innerText = accuracy + "%";
         
-        // --- NEW TARGET CALCULATION LOGIC ---
-        // Formula: Required Right = (Target% * Wrongs) / (1 - Target%)
-        
-        // 95% Target (0.95 / 0.05 = 19)
-        const req95 = Math.ceil(19 * scoreWrong);
-        document.getElementById('target-95').innerText = `${req95}/${scoreWrong}`;
+        // Helper to format: Green Number / Red Number
+        function formatTarget(req, wrong) {
+            return `<span style="color:var(--success)">${req}</span>/<span style="color:var(--error)">${wrong}</span>`;
+        }
 
-        // 98% Target (0.98 / 0.02 = 49)
+        // 90% Target (9:1 ratio)
+        const req90 = Math.ceil(9 * scoreWrong);
+        document.getElementById('target-90').innerHTML = formatTarget(req90, scoreWrong);
+
+        // 95% Target (19:1 ratio)
+        const req95 = Math.ceil(19 * scoreWrong);
+        document.getElementById('target-95').innerHTML = formatTarget(req95, scoreWrong);
+
+        // 98% Target (49:1 ratio)
         const req98 = Math.ceil(49 * scoreWrong);
-        document.getElementById('target-98').innerText = `${req98}/${scoreWrong}`;
-        // -------------------------------------
+        document.getElementById('target-98').innerHTML = formatTarget(req98, scoreWrong);
 
         localStorage.setItem('sb_right', scoreRight);
         localStorage.setItem('sb_wrong', scoreWrong);
@@ -314,7 +326,6 @@
             hintEl.innerText = "Definition: " + currentWordData.meaning;
             
             if (questionNumberEl) {
-                // If the word object doesn't have a question_number, we calculate it crudely
                 const qNum = currentWordData.question_number || (scoreRight + scoreWrong + 1);
                 questionNumberEl.innerText = "Question " + qNum;
             }
