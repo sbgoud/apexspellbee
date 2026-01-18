@@ -3,135 +3,215 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spelling Bee - Mastery Edition</title>
+    <title>Spelling Bee - Kids Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #3498db;
-            --success: #27ae60;
-            --error: #e74c3c;
-            --dark: #2c3e50;
-            --light: #f4f7f6;
+            /* Playful Palette */
+            --primary: #4FACFE; /* Bright Sky Blue */
+            --primary-dark: #00F2FE; 
+            --accent: #FF9A9E; /* Soft Pink */
+            --success: #43e97b; /* Minty Green */
+            --error: #ff6b6b; /* Soft Red */
+            --warning: #feca57; /* Sunny Yellow */
+            --text-main: #576574;
+            --bg-color: #e0f7fa;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--light);
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#4facfe 0.5px, transparent 0.5px), radial-gradient(#4facfe 0.5px, var(--bg-color) 0.5px);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
             display: flex;
             justify-content: center;
             align-items: flex-start;
             min-height: 100vh;
             margin: 0;
-            padding-top: 10px;
+            padding-top: 20px;
         }
 
         #game-box {
             background: white;
-            padding: 0.1rem 2rem 2rem 2rem;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-            width: 95%;
-            max-width: 700px; /* Widened to fit 6 columns comfortably */
+            padding: 2rem;
+            border-radius: 25px;
+            border: 4px solid #fff;
+            box-shadow: 0 15px 35px rgba(50, 50, 93, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);
+            width: 90%;
+            max-width: 650px;
             text-align: center;
-            margin-top: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Top decoration bar */
+        #game-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 12px;
+            background: linear-gradient(90deg, var(--primary), var(--accent), var(--warning), var(--success));
         }
 
         .hidden { display: none; }
 
+        h2 {
+            font-weight: 900;
+            color: var(--primary);
+            font-size: 2.2rem;
+            text-shadow: 2px 2px 0px #daf0ff;
+        }
+
+        /* Stats Styling - Bubbly Look */
         .stats-container {
-            background: #f8fafc;
-            padding: 10px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            border: 1px solid #e2e8f0;
+            background: #f1f9ff;
+            padding: 15px;
+            border-radius: 18px;
+            margin-bottom: 25px;
+            border: 2px solid #ddecff;
         }
 
         .stats-grid { 
             display: grid;
-            /* Now 6 columns to fit Correct, Wrong, Acc, T90, T95, T98 */
-            grid-template-columns: repeat(6, 1fr);
-            gap: 5px;
-            font-weight: bold; 
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            font-weight: 700; 
         }
 
         .stat-item { 
             display: flex; 
             flex-direction: column; 
-            font-size: 0.75rem; 
-            justify-content: flex-start;
+            align-items: center;
+            font-size: 0.85rem; 
+            color: var(--text-main);
         }
 
-        .stat-value { font-size: 1.1rem; margin-top: 4px; }
+        .stat-value { 
+            font-size: 1.1rem; 
+            margin-top: 5px; 
+            background: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            min-width: 40px;
+        }
         
-        .correct { color: var(--success); }
-        .wrong { color: var(--error); }
-        .percentage { color: var(--primary); }
+        .correct { color: #2ecc71; border: 2px solid #2ecc71; }
+        .wrong { color: #e74c3c; border: 2px solid #e74c3c; }
+        .percentage { color: #3498db; border: 2px solid #3498db; }
         
-        /* Specific target styles handled inline in JS now for colors */
-
+        /* Input Field Styling */
         input[type="text"] { 
-            padding: 14px; 
-            width: 85%; 
-            font-size: 1.2rem; 
-            border: 2px solid #cbd5e1; 
-            border-radius: 10px; 
-            margin: 15px 0; 
+            padding: 15px; 
+            width: 80%; 
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.5rem; 
+            font-weight: 700;
+            border: 3px solid #dfe6e9; 
+            border-radius: 15px; 
+            margin: 20px 0; 
             outline: none; 
             text-align: center; 
-            transition: border-color 0.2s;
+            color: var(--text-main);
+            transition: all 0.3s ease;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
         }
 
         input[type="text"]:focus {
             border-color: var(--primary);
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.2);
         }
 
+        /* Button Styling - 3D Effect */
         button { 
             background: var(--primary); 
             color: white; 
             border: none; 
-            padding: 14px 28px; 
-            border-radius: 10px; 
+            padding: 15px 35px; 
+            border-radius: 50px; 
             cursor: pointer; 
-            font-size: 1.1rem; 
-            font-weight: 600;
-            transition: transform 0.1s, background 0.2s;
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.2rem; 
+            font-weight: 800;
+            transition: all 0.1s;
+            box-shadow: 0 6px 0 #2980b9; /* The 3D bottom part */
+            margin-bottom: 6px; /* Space for the shadow */
         }
 
-        button:hover { background: #2980b9; }
-        button:active { transform: scale(0.98); }
+        button:hover { 
+            background: #40a0e0; 
+            transform: translateY(-2px);
+            box-shadow: 0 8px 0 #2980b9;
+        }
+        
+        button:active { 
+            transform: translateY(6px);
+            box-shadow: none;
+            margin-bottom: 0;
+            margin-top: 6px;
+        }
 
+        /* Puzzle Text Styling */
         .word-puzzle { 
-            font-size: 2.5rem; 
-            letter-spacing: 8px; 
+            font-size: 3rem; 
+            letter-spacing: 12px; 
             font-family: 'Courier New', Courier, monospace; 
-            margin: 25px 0; 
-            color: var(--dark); 
-            font-weight: bold;
+            margin: 20px 0; 
+            color: var(--text-main); 
+            font-weight: 900;
+            text-shadow: 2px 2px 0px #eee;
         }
 
+        /* IMPORTANT: Bigger Definition Box */
         .hint-box { 
-            background: #fffbeb; 
-            padding: 15px; 
-            border-radius: 10px; 
-            font-style: italic; 
-            color: #92400e; 
-            margin-bottom: 20px; 
-            min-height: 50px; 
-            font-size: 0.95rem;
-            border-left: 4px solid #f59e0b;
+            background: #fff9c4; /* Sticky Note Yellow */
+            padding: 20px; 
+            border-radius: 15px; 
+            color: #5d4037; 
+            margin-bottom: 25px; 
+            min-height: 60px; 
+            
+            /* Big Font Size Changes */
+            font-size: 1.5rem;
+            line-height: 1.4;
+            font-weight: 600;
+            
+            border: 3px dashed #fbc02d; /* Dash border looks like a cutout */
+            position: relative;
+            box-shadow: 5px 5px 0px rgba(0,0,0,0.05);
+        }
+        
+        .hint-box::before {
+            content: '💡 HINT';
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: #fbc02d;
+            color: white;
+            font-size: 0.8rem;
+            padding: 2px 10px;
+            border-radius: 10px;
+            font-weight: 800;
         }
 
         #feedback { 
             margin: 15px 0; 
-            font-weight: bold; 
-            height: 24px; 
-            font-size: 1.1rem;
+            font-weight: 800; 
+            height: 40px; 
+            font-size: 1.4rem;
         }
         
-        @media (max-width: 600px) {
-            .stat-value { font-size: 0.9rem; }
-            .stat-item span:first-child { font-size: 0.65rem; }
+        @media (max-width: 550px) {
+            .stat-value { font-size: 0.8rem; min-width: 30px; }
+            .stat-item span:first-child { font-size: 0.6rem; }
             .stats-grid { gap: 2px; }
-            #game-box { padding-left: 1rem; padding-right: 1rem; }
+            #game-box { padding: 1rem; }
+            .word-puzzle { font-size: 2rem; letter-spacing: 5px; }
+            .hint-box { font-size: 1.2rem; }
         }
     </style>
 </head>
@@ -139,62 +219,72 @@
 
 <div id="game-box">
     <div id="login-screen">
-        <div style="font-size: 3rem; margin-top: 5px; margin-bottom: 5px;">🐝</div>
-        <h2 style="color: var(--dark); margin-top: 0; margin-bottom: 5px;">Spelling Bee</h2>
-        <p style="color: #64748b; margin-bottom: 15px;">Master the word list and track your progress.</p>
-        <input type="text" id="user-name" placeholder="Enter Student Name" autofocus>
+        <div style="font-size: 5rem; margin-top: 10px; margin-bottom: 10px; animation: float 3s ease-in-out infinite;">🐝</div>
+        <h2 style="margin-top: 0; margin-bottom: 5px;">Spelling Bee</h2>
+        <p style="color: #7f8c8d; font-size: 1.1rem;">Ready to be a spelling champion?</p>
+        <input type="text" id="user-name" placeholder="Type your name!" autofocus>
         <br><br>
-        <button onclick="startSession()">Start Practice</button>
+        <button onclick="startSession()">Let's Play!</button>
     </div>
 
     <div id="game-screen" class="hidden">
         <div class="stats-container">
             <div class="stats-grid">
                 <div class="stat-item">
-                    <span>Correct</span>
+                    <span>CORRECT</span>
                     <span id="count-right" class="stat-value correct">0</span>
                 </div>
                 <div class="stat-item">
-                    <span>Wrong</span>
+                    <span>WRONG</span>
                     <span id="count-wrong" class="stat-value wrong">0</span>
                 </div>
                 <div class="stat-item">
-                    <span>Accuracy</span>
+                    <span>SCORE</span>
                     <span id="accuracy-display" class="stat-value percentage">0%</span>
                 </div>
                 
                 <div class="stat-item">
-                    <span>Target 90%</span>
+                    <span>GOAL 90%</span>
                     <span id="target-90" class="stat-value">0/0</span>
                 </div>
                 <div class="stat-item">
-                    <span>Target 95%</span>
-                    <span id="target-95" class="stat-value">0/0</span>
-                </div>
-                <div class="stat-item">
-                    <span>Target 98%</span>
-                    <span id="target-98" class="stat-value">0/0</span>
+                    <span>GOAL 93%</span>
+                    <span id="target-93" class="stat-value">0/0</span>
                 </div>
             </div>
         </div>
         
-        <p style="color: #64748b; margin-top: 0;">Student: <strong id="player-display" style="color: var(--dark);"></strong></p>
-        <p style="color: #64748b; margin-top: 5px; font-weight: bold;" id="question-number"></p>
+        <div style="display: flex; justify-content: space-between; padding: 0 10px; color: #7f8c8d; font-weight: bold;">
+            <span id="player-display">Player</span>
+            <span id="question-number">Q: 1</span>
+        </div>
 
         <div class="word-puzzle" id="puzzle-text"></div>
+        
         <div class="hint-box" id="hint-text">Getting word information...</div>
 
-        <input type="text" id="user-entry" placeholder="Type the full word" autocomplete="off">
+        <input type="text" id="user-entry" placeholder="Type answer here..." autocomplete="off">
         <div id="feedback"></div>
 
         <div style="margin-top: 10px;">
-            <button id="btn-submit" onclick="checkSpelling()">Submit Answer</button>
-            <button id="btn-next" class="hidden" onclick="nextWord()">Next Word ➔</button>
+            <button id="btn-submit" onclick="checkSpelling()">Check Answer</button>
+            <button id="btn-next" class="hidden" onclick="nextWord()" style="background-color: var(--success); box-shadow: 0 6px 0 #27ae60;">Next Word ➔</button>
         </div>
     </div>
 </div>
 
 <script>
+    // Add floating animation for the Bee
+    const styleSheet = document.createElement("style");
+    styleSheet.innerText = `
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(5deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+    `;
+    document.head.appendChild(styleSheet);
+
     let wordList = [];
     let currentQuestionNumber = 0;
 
@@ -222,20 +312,16 @@
         
         // Helper to format: Green Number / Red Number
         function formatTarget(req, wrong) {
-            return `<span style="color:var(--success)">${req}</span>/<span style="color:var(--error)">${wrong}</span>`;
+            return `<span style="color:var(--success)">${req}</span> / <span style="color:var(--error)">${wrong}</span>`;
         }
 
-        // 90% Target (9:1 ratio)
+        // 90% Target (Ratio 9:1)
         const req90 = Math.ceil(9 * scoreWrong);
         document.getElementById('target-90').innerHTML = formatTarget(req90, scoreWrong);
 
-        // 95% Target (19:1 ratio)
-        const req95 = Math.ceil(19 * scoreWrong);
-        document.getElementById('target-95').innerHTML = formatTarget(req95, scoreWrong);
-
-        // 98% Target (49:1 ratio)
-        const req98 = Math.ceil(49 * scoreWrong);
-        document.getElementById('target-98').innerHTML = formatTarget(req98, scoreWrong);
+        // 93% Target
+        const req93 = Math.ceil((0.93 * scoreWrong) / 0.07);
+        document.getElementById('target-93').innerHTML = formatTarget(req93, scoreWrong);
 
         localStorage.setItem('sb_right', scoreRight);
         localStorage.setItem('sb_wrong', scoreWrong);
@@ -246,7 +332,7 @@
         if (!name) return alert("Please enter a student name!");
         
         localStorage.setItem('sb_name', name);
-        document.getElementById('player-display').innerText = name;
+        document.getElementById('player-display').innerText = "Student: " + name;
         
         document.getElementById('login-screen').className = "hidden";
         document.getElementById('game-screen').className = "";
@@ -279,16 +365,16 @@
         } catch (error) {
             console.error('Error loading words.json:', error);
             wordList = [
-                {word: "Abdomen", meaning: "the stomach"},
-                {word: "Ability", meaning: "skill or power to do anything"},
-                {word: "Abolish", meaning: "to end or stop officially"},
-                {word: "Abroad", meaning: "to a foreign country"},
-                {word: "Abrupt", meaning: "sudden"},
-                {word: "Absence", meaning: "not present"},
-                {word: "Absent", meaning: "not present"},
-                {word: "Absorb", meaning: "take in or soak up"},
-                {word: "Absurd", meaning: "foolish"},
-                {word: "Academy", meaning: "a place of study or training"}
+                {word: "Abdomen", meaning: "The stomach area"},
+                {word: "Ability", meaning: "Skill or power to do anything"},
+                {word: "Abolish", meaning: "To end or stop officially"},
+                {word: "Abroad", meaning: "To a foreign country"},
+                {word: "Abrupt", meaning: "Sudden or unexpected"},
+                {word: "Absence", meaning: "Not being present"},
+                {word: "Absent", meaning: "Not here"},
+                {word: "Absorb", meaning: "To take in or soak up"},
+                {word: "Absurd", meaning: "Very foolish or silly"},
+                {word: "Academy", meaning: "A school or place of study"}
             ];
         }
     }
@@ -323,11 +409,11 @@
         const questionNumberEl = document.getElementById('question-number');
         
         if (currentWordData) {
-            hintEl.innerText = "Definition: " + currentWordData.meaning;
+            hintEl.innerText = currentWordData.meaning; // Removed "Definition:" prefix for cleaner look
             
             if (questionNumberEl) {
                 const qNum = currentWordData.question_number || (scoreRight + scoreWrong + 1);
-                questionNumberEl.innerText = "Question " + qNum;
+                questionNumberEl.innerText = "Question: " + qNum;
             }
             
             if (currentPuzzleState) {
@@ -369,11 +455,11 @@
         if (!attempt) return;
 
         if (attempt === currentWord.toLowerCase()) {
-            feedback.innerText = "✨ Correct! You spelled it right.";
+            feedback.innerText = "🎉 Awesome! You got it!";
             feedback.style.color = "var(--success)";
             scoreRight++;
         } else {
-            feedback.innerHTML = `❌ Incorrect. Correct: <span style="color:var(--dark)">${currentWord}</span>`;
+            feedback.innerHTML = `😮 Oops! Correct was: <span style="color:var(--text-main); text-decoration: underline;">${currentWord}</span>`;
             feedback.style.color = "var(--error)";
             scoreWrong++;
         }
