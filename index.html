@@ -248,8 +248,8 @@
                     <span id="target-90" class="stat-value">0/0</span>
                 </div>
                 <div class="stat-item">
-                    <span>GOAL 93%</span>
-                    <span id="target-93" class="stat-value">0/0</span>
+                    <span>GOAL 98%</span>
+                    <span id="target-98" class="stat-value">0/0</span>
                 </div>
             </div>
         </div>
@@ -319,9 +319,10 @@
         const req90 = Math.ceil(9 * scoreWrong);
         document.getElementById('target-90').innerHTML = formatTarget(req90, scoreWrong);
 
-        // 93% Target
-        const req93 = Math.ceil((0.93 * scoreWrong) / 0.07);
-        document.getElementById('target-93').innerHTML = formatTarget(req93, scoreWrong);
+        // 98% Target (Ratio 49:1)
+        // Logic: (0.98 / 0.02) = 49
+        const req98 = Math.ceil(49 * scoreWrong);
+        document.getElementById('target-98').innerHTML = formatTarget(req98, scoreWrong);
 
         localStorage.setItem('sb_right', scoreRight);
         localStorage.setItem('sb_wrong', scoreWrong);
@@ -409,7 +410,7 @@
         const questionNumberEl = document.getElementById('question-number');
         
         if (currentWordData) {
-            hintEl.innerText = currentWordData.meaning; // Removed "Definition:" prefix for cleaner look
+            hintEl.innerText = currentWordData.meaning; 
             
             if (questionNumberEl) {
                 const qNum = currentWordData.question_number || (scoreRight + scoreWrong + 1);
