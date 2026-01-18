@@ -30,7 +30,7 @@
             border-radius: 16px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.08);
             width: 95%;
-            max-width: 500px;
+            max-width: 600px; /* Increased width slightly to fit new stats */
             text-align: center;
             margin-top: 0;
         }
@@ -39,7 +39,7 @@
 
         .stats-container {
             background: #f8fafc;
-            padding: 15px;
+            padding: 10px;
             border-radius: 12px;
             margin-bottom: 20px;
             border: 1px solid #e2e8f0;
@@ -47,17 +47,25 @@
 
         .stats-grid { 
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 10px;
+            /* Changed from 3 columns to 5 columns */
+            grid-template-columns: repeat(5, 1fr);
+            gap: 5px;
             font-weight: bold; 
         }
 
-        .stat-item { display: flex; flex-direction: column; font-size: 0.9rem; }
-        .stat-value { font-size: 1.2rem; margin-top: 4px; }
+        .stat-item { 
+            display: flex; 
+            flex-direction: column; 
+            font-size: 0.75rem; /* Slightly smaller font to fit 5 cols */
+            justify-content: flex-start;
+        }
+
+        .stat-value { font-size: 1.1rem; margin-top: 4px; }
         
         .correct { color: var(--success); }
         .wrong { color: var(--error); }
         .percentage { color: var(--primary); }
+        .target { color: #8e44ad; } /* Purple for targets */
 
         input[type="text"] { 
             padding: 14px; 
@@ -118,8 +126,11 @@
             font-size: 1.1rem;
         }
         
-        .loading-dots:after { content: ' .'; animation: dots 1s steps(5, end) infinite;}
-        @keyframes dots { 0%, 20% { content: ' .'; } 40% { content: ' ..'; } 60% { content: ' ...'; } 80%, 100% { content: ''; } }
+        /* Mobile adjustment for stats */
+        @media (max-width: 480px) {
+            .stat-value { font-size: 0.9rem; }
+            .stat-item span:first-child { font-size: 0.65rem; }
+        }
     </style>
 </head>
 <body>
@@ -148,6 +159,14 @@
                 <div class="stat-item">
                     <span>Accuracy</span>
                     <span id="accuracy-display" class="stat-value percentage">0%</span>
+                </div>
+                <div class="stat-item">
+                    <span>Target 95%</span>
+                    <span id="target-95" class="stat-value target">0/0</span>
+                </div>
+                <div class="stat-item">
+                    <span>Target 98%</span>
+                    <span id="target-98" class="stat-value target">0/0</span>
                 </div>
             </div>
         </div>
@@ -194,6 +213,18 @@
         const accuracy = total === 0 ? 0 : Math.round((scoreRight / total) * 100);
         document.getElementById('accuracy-display').innerText = accuracy + "%";
         
+        // --- NEW TARGET CALCULATION LOGIC ---
+        // Formula: Required Right = (Target% * Wrongs) / (1 - Target%)
+        
+        // 95% Target (0.95 / 0.05 = 19)
+        const req95 = Math.ceil(19 * scoreWrong);
+        document.getElementById('target-95').innerText = `${req95}/${scoreWrong}`;
+
+        // 98% Target (0.98 / 0.02 = 49)
+        const req98 = Math.ceil(49 * scoreWrong);
+        document.getElementById('target-98').innerText = `${req98}/${scoreWrong}`;
+        // -------------------------------------
+
         localStorage.setItem('sb_right', scoreRight);
         localStorage.setItem('sb_wrong', scoreWrong);
     }
@@ -210,7 +241,6 @@
         
         updateStats();
         
-        // Load word list first, then start with either saved word or new word
         await loadWordList();
         const savedData = localStorage.getItem('sb_current_word');
         if (savedData) {
@@ -236,7 +266,6 @@
             console.log('Word list loaded:', wordList.length, 'words');
         } catch (error) {
             console.error('Error loading words.json:', error);
-            // Fallback to hardcoded list if JSON fails
             wordList = [
                 {word: "Abdomen", meaning: "the stomach"},
                 {word: "Ability", meaning: "skill or power to do anything"},
@@ -284,12 +313,12 @@
         if (currentWordData) {
             hintEl.innerText = "Definition: " + currentWordData.meaning;
             
-            // Show question number
             if (questionNumberEl) {
-                questionNumberEl.innerText = "Question " + currentWordData.question_number;
+                // If the word object doesn't have a question_number, we calculate it crudely
+                const qNum = currentWordData.question_number || (scoreRight + scoreWrong + 1);
+                questionNumberEl.innerText = "Question " + qNum;
             }
             
-            // Use saved puzzle state if available, otherwise generate new one
             if (currentPuzzleState) {
                 puzzleEl.innerText = currentPuzzleState;
             } else {
@@ -306,15 +335,12 @@
         document.getElementById('btn-submit').classList.remove('hidden');
         document.getElementById('btn-next').classList.add('hidden');
         
-        // Get a random word from the word list
         currentWordData = wordList[Math.floor(Math.random() * wordList.length)];
         currentWord = currentWordData.word;
-        currentPuzzleState = ""; // Reset puzzle state for new word
+        currentPuzzleState = "";
         
-        // Generate and save puzzle state
         currentPuzzleState = generatePuzzleState(currentWord);
         
-        // Save current question and puzzle state to local storage for persistence on refresh
         const savedData = {
             wordData: currentWordData,
             puzzleState: currentPuzzleState
