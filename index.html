@@ -8,14 +8,15 @@
     <style>
         :root {
             /* Playful Palette */
-            --primary: #4FACFE; /* Bright Sky Blue */
+            --primary: #4FACFE; 
             --primary-dark: #00F2FE; 
-            --accent: #FF9A9E; /* Soft Pink */
-            --success: #43e97b; /* Minty Green */
-            --error: #ff6b6b; /* Soft Red */
-            --warning: #feca57; /* Sunny Yellow */
+            --accent: #FF9A9E; 
+            --success: #43e97b; 
+            --error: #ff6b6b; 
+            --warning: #feca57; 
             --text-main: #576574;
             --bg-color: #e0f7fa;
+            --header-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
 
         body {
@@ -45,7 +46,6 @@
             overflow: hidden;
         }
 
-        /* Top decoration bar */
         #game-box::before {
             content: '';
             position: absolute;
@@ -65,7 +65,41 @@
             text-shadow: 2px 2px 0px #daf0ff;
         }
 
-        /* Stats Styling - Bubbly Look */
+        /* NEW: Big Goal Header Styling */
+        .goal-header {
+            background: var(--header-bg);
+            color: white;
+            padding: 15px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-around;
+            box-shadow: 0 10px 20px rgba(118, 75, 162, 0.2);
+            border: 2px solid white;
+        }
+
+        .goal-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .goal-label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+
+        .goal-number {
+            font-size: 3rem; /* BIG BOLD */
+            font-weight: 900;
+            line-height: 1;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+        }
+
+        /* Stats Styling */
         .stats-container {
             background: #f1f9ff;
             padding: 15px;
@@ -90,20 +124,20 @@
         }
 
         .stat-value { 
-            font-size: 1.1rem; 
+            font-size: 1rem; 
             margin-top: 5px; 
             background: white;
-            padding: 4px 10px;
+            padding: 4px 6px;
             border-radius: 20px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
             min-width: 40px;
+            white-space: nowrap;
         }
         
         .correct { color: #2ecc71; border: 2px solid #2ecc71; }
         .wrong { color: #e74c3c; border: 2px solid #e74c3c; }
         .percentage { color: #3498db; border: 2px solid #3498db; }
         
-        /* Input Field Styling */
         input[type="text"] { 
             padding: 15px; 
             width: 80%; 
@@ -126,7 +160,6 @@
             box-shadow: 0 5px 15px rgba(79, 172, 254, 0.2);
         }
 
-        /* Button Styling - 3D Effect */
         button { 
             background: var(--primary); 
             color: white; 
@@ -138,8 +171,8 @@
             font-size: 1.2rem; 
             font-weight: 800;
             transition: all 0.1s;
-            box-shadow: 0 6px 0 #2980b9; /* The 3D bottom part */
-            margin-bottom: 6px; /* Space for the shadow */
+            box-shadow: 0 6px 0 #2980b9; 
+            margin-bottom: 6px; 
         }
 
         button:hover { 
@@ -155,7 +188,6 @@
             margin-top: 6px;
         }
 
-        /* Puzzle Text Styling */
         .word-puzzle { 
             font-size: 3rem; 
             letter-spacing: 12px; 
@@ -166,21 +198,17 @@
             text-shadow: 2px 2px 0px #eee;
         }
 
-        /* IMPORTANT: Bigger Definition Box */
         .hint-box { 
-            background: #fff9c4; /* Sticky Note Yellow */
+            background: #fff9c4; 
             padding: 20px; 
             border-radius: 15px; 
             color: #5d4037; 
             margin-bottom: 25px; 
             min-height: 60px; 
-            
-            /* Big Font Size Changes */
             font-size: 1.5rem;
             line-height: 1.4;
             font-weight: 600;
-            
-            border: 3px dashed #fbc02d; /* Dash border looks like a cutout */
+            border: 3px dashed #fbc02d; 
             position: relative;
             box-shadow: 5px 5px 0px rgba(0,0,0,0.05);
         }
@@ -212,6 +240,7 @@
             #game-box { padding: 1rem; }
             .word-puzzle { font-size: 2rem; letter-spacing: 5px; }
             .hint-box { font-size: 1.2rem; }
+            .goal-number { font-size: 2.2rem; }
         }
     </style>
 </head>
@@ -228,6 +257,19 @@
     </div>
 
     <div id="game-screen" class="hidden">
+        
+        <div class="goal-header">
+            <div class="goal-item">
+                <span class="goal-label">Need for 90%</span>
+                <span id="rem-90" class="goal-number">0</span>
+            </div>
+            <div style="width: 2px; background: rgba(255,255,255,0.3);"></div>
+            <div class="goal-item">
+                <span class="goal-label">Need for 98%</span>
+                <span id="rem-98" class="goal-number">0</span>
+            </div>
+        </div>
+
         <div class="stats-container">
             <div class="stats-grid">
                 <div class="stat-item">
@@ -240,7 +282,7 @@
                 </div>
                 <div class="stat-item">
                     <span>SCORE</span>
-                    <span id="accuracy-display" class="stat-value percentage">0%</span>
+                    <span id="accuracy-display" class="stat-value percentage">0.00%</span>
                 </div>
                 
                 <div class="stat-item">
@@ -307,7 +349,7 @@
         document.getElementById('count-wrong').innerText = scoreWrong;
         
         const total = scoreRight + scoreWrong;
-        const accuracy = total === 0 ? 0 : Math.round((scoreRight / total) * 100);
+        const accuracy = total === 0 ? "0.00" : ((scoreRight / total) * 100).toFixed(2);
         document.getElementById('accuracy-display').innerText = accuracy + "%";
         
         // Helper to format: Green Number / Red Number
@@ -315,14 +357,23 @@
             return `<span style="color:var(--success)">${req}</span> / <span style="color:var(--error)">${wrong}</span>`;
         }
 
+        // --- CALCULATION LOGIC ---
+
         // 90% Target (Ratio 9:1)
         const req90 = Math.ceil(9 * scoreWrong);
+        // Calculate remaining needed (cannot be less than 0)
+        const rem90 = Math.max(0, req90 - scoreRight);
+        
         document.getElementById('target-90').innerHTML = formatTarget(req90, scoreWrong);
+        document.getElementById('rem-90').innerText = rem90;
 
         // 98% Target (Ratio 49:1)
-        // Logic: (0.98 / 0.02) = 49
         const req98 = Math.ceil(49 * scoreWrong);
+        // Calculate remaining needed (cannot be less than 0)
+        const rem98 = Math.max(0, req98 - scoreRight);
+
         document.getElementById('target-98').innerHTML = formatTarget(req98, scoreWrong);
+        document.getElementById('rem-98').innerText = rem98;
 
         localStorage.setItem('sb_right', scoreRight);
         localStorage.setItem('sb_wrong', scoreWrong);
