@@ -543,9 +543,9 @@
         if (!attempt) return;
 
         if (attempt === currentWord.toLowerCase()) {
-            // DOUBLE POINTS LOGIC
+            // 5 times POINTS LOGIC
             if (!isRevealed) {
-                scoreRight += 2;
+                scoreRight += 5;
                 feedback.innerHTML = "🌟 <b>DOUBLE POINTS!</b> Amazing job! 🌟";
                 feedback.style.color = "var(--primary)"; // Special color for double points
             } else {
