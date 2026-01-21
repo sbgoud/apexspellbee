@@ -352,7 +352,6 @@
     let currentWord = "";
     let currentWordData = null;
     let currentPuzzleState = "";
-    // New State Variable for double points
     let isRevealed = false;
     
     let scoreRight = parseInt(localStorage.getItem('sb_right')) || 0;
@@ -379,7 +378,6 @@
         }
 
         // --- 92% Target (Ratio approx 11.5 : 1) ---
-        // Formula: (0.92 / 0.08) = 11.5
         const req92 = Math.ceil(11.5 * scoreWrong);
         const rem92 = Math.max(0, req92 - scoreRight);
         
@@ -417,7 +415,6 @@
                 currentWordData = parsedData.wordData;
                 currentWord = currentWordData.word;
                 currentPuzzleState = parsedData.puzzleState;
-                // Don't save revealed state on refresh to encourage trying again, or default to false
                 isRevealed = false; 
                 showWordInfo();
             } catch (error) {
@@ -487,27 +484,29 @@
                 questionNumberEl.innerText = "Question: " + qNum;
             }
             
-            // Logic for Hidden vs Revealed
+            // Generate puzzle state if missing
             if (!currentPuzzleState) {
                 currentPuzzleState = generatePuzzleState(currentWord);
             }
 
+            // --- DISPLAY LOGIC MODIFIED ---
             if (isRevealed) {
+                // Show the "Hint" version (e.g., A_d_m_n)
                 puzzleEl.innerText = currentPuzzleState;
                 document.getElementById('btn-reveal').classList.add('hidden');
             } else {
-                puzzleEl.innerText = "??????";
+                // Show the "Hard Mode" version (e.g., A??????)
+                // First char + questions marks for the rest
+                const maskedWord = currentWord.charAt(0) + "?".repeat(currentWord.length - 1);
+                puzzleEl.innerText = maskedWord;
                 document.getElementById('btn-reveal').classList.remove('hidden');
             }
         }
     }
 
-    // New Function: Reveals the puzzle state when button clicked
     function revealPuzzle() {
         isRevealed = true;
-        const puzzleEl = document.getElementById('puzzle-text');
-        puzzleEl.innerText = currentPuzzleState;
-        document.getElementById('btn-reveal').classList.add('hidden');
+        showWordInfo(); // Call showWordInfo to update the text based on isRevealed = true
     }
 
     function nextWord() {
@@ -543,11 +542,11 @@
         if (!attempt) return;
 
         if (attempt === currentWord.toLowerCase()) {
-            // 5 times POINTS LOGIC
+            // 5X POINTS LOGIC
             if (!isRevealed) {
-                scoreRight += 5;
-                feedback.innerHTML = "🌟 <b>DOUBLE POINTS!</b> Amazing job! 🌟";
-                feedback.style.color = "var(--primary)"; // Special color for double points
+                scoreRight += 5; // Updated to 5
+                feedback.innerHTML = "🌟 <b>5X POINTS!</b> Amazing job! 🌟";
+                feedback.style.color = "var(--primary)";
             } else {
                 scoreRight++;
                 feedback.innerText = "🎉 Correct! Good work.";
@@ -561,11 +560,9 @@
 
         updateStats();
         
-        // Automatically reveal puzzle on answer so they see what they missed/got right
-        if (!isRevealed) {
-             document.getElementById('puzzle-text').innerText = currentWord; // Show full word on completion
-             document.getElementById('btn-reveal').classList.add('hidden');
-        }
+        // Always reveal full word on completion
+        document.getElementById('puzzle-text').innerText = currentWord;
+        document.getElementById('btn-reveal').classList.add('hidden');
 
         document.getElementById('user-entry').disabled = true;
         document.getElementById('btn-submit').classList.add('hidden');
