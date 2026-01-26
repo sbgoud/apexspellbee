@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spelling Bee - Kids Edition</title>
+    <title>Spelling Bee - Synonyms & Antonyms</title>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -267,7 +267,7 @@
     <div id="login-screen">
         <div style="font-size: 5rem; margin-top: 10px; margin-bottom: 10px; animation: float 3s ease-in-out infinite;">🐝</div>
         <h2 style="margin-top: 0; margin-bottom: 5px;">Spelling Bee</h2>
-        <p style="color: #7f8c8d; font-size: 1.1rem;">Ready to be a spelling champion?</p>
+        <p style="color: #7f8c8d; font-size: 1.1rem;">Synonyms & Antonyms Edition</p>
         <input type="text" id="user-name" placeholder="Type your name!" autofocus>
         <br><br>
         <button onclick="startSession()">Let's Play!</button>
@@ -320,7 +320,7 @@
 
         <div class="puzzle-container">
             <div class="word-puzzle" id="puzzle-text">?????</div>
-            <button id="btn-reveal" onclick="revealPuzzle()">👀 Show Letter Clues</button>
+            <button id="btn-reveal" onclick="revealPuzzle()">👀 Show Word</button>
         </div>
         
         <div class="hint-box" id="hint-text">Getting word information...</div>
@@ -346,14 +346,16 @@
     `;
     document.head.appendChild(styleSheet);
 
-    let wordList = [];
-    let currentQuestionNumber = 0;
-
+    // CHANGED: Separate lists for Synonyms and Antonyms
+    let synonymList = [];
+    let antonymList = [];
+    
     let currentWord = "";
     let currentWordData = null;
     let currentPuzzleState = "";
     let isRevealed = false;
     
+    // EXISTING: Retain old local storage logic
     let scoreRight = parseInt(localStorage.getItem('sb_right')) || 0;
     let scoreWrong = parseInt(localStorage.getItem('sb_wrong')) || 0;
 
@@ -407,7 +409,9 @@
         
         updateStats();
         
-        await loadWordList();
+        // CHANGED: Load both lists
+        await loadWordLists();
+        
         const savedData = localStorage.getItem('sb_current_word');
         if (savedData) {
             try {
@@ -426,46 +430,55 @@
         }
     }
 
-    async function loadWordList() {
+    // CHANGED: Logic to load both files with the specific fallback data provided
+    async function loadWordLists() {
+        // 1. Try Loading Synonyms
         try {
-            const response = await fetch('words.json');
-            wordList = await response.json();
+            const responseSyn = await fetch('synonyms.json');
+            synonymList = await responseSyn.json();
         } catch (error) {
-            console.error('Error loading words.json:', error);
-            wordList = [
-                {word: "Abdomen", meaning: "The stomach area"},
-                {word: "Ability", meaning: "Skill or power to do anything"},
-                {word: "Abolish", meaning: "To end or stop officially"},
-                {word: "Abroad", meaning: "To a foreign country"},
-                {word: "Abrupt", meaning: "Sudden or unexpected"},
-                {word: "Absence", meaning: "Not being present"},
-                {word: "Absent", meaning: "Not here"},
-                {word: "Absorb", meaning: "To take in or soak up"},
-                {word: "Absurd", meaning: "Very foolish or silly"},
-                {word: "Academy", meaning: "A school or place of study"}
+            console.log('Using default synonym list');
+            synonymList = [
+                { "question_number": 1001, "word": "Above", "meaning": "Aloft" },
+                { "question_number": 1002, "word": "Aloft", "meaning": "Above" },
+                { "question_number": 1003, "word": "Abhor", "meaning": "Hate" },
+                { "question_number": 1004, "word": "Hate", "meaning": "Abhor" },
+                { "question_number": 1005, "word": "Absent", "meaning": "Away" },
+                { "question_number": 1006, "word": "Away", "meaning": "Absent" },
+                { "question_number": 1007, "word": "Abolish", "meaning": "Cancel" },
+                { "question_number": 1008, "word": "Cancel", "meaning": "Abolish" }
+            ];
+        }
+
+        // 2. Try Loading Antonyms
+        try {
+            const responseAnt = await fetch('antonyms.json');
+            antonymList = await responseAnt.json();
+        } catch (error) {
+            console.log('Using default antonym list');
+            antonymList = [
+                { "question_number": 2000, "word": "Above", "meaning": "Below" },
+                { "question_number": 2001, "word": "Below", "meaning": "Above" },
+                { "question_number": 2002, "word": "Abhor", "meaning": "Love" },
+                { "question_number": 2003, "word": "Love", "meaning": "Abhor" },
+                { "question_number": 2004, "word": "Absent", "meaning": "Present" }
             ];
         }
     }
 
     function generatePuzzleState(word) {
-        const maxBlanks = Math.floor((word.length - 1) / 2);
+        // CHANGED: Ensure "random blanks" logic is applied
         let wordArray = word.split('');
-        
-        let eligibleIndices = Array.from({length: wordArray.length}, (_, i) => i).filter(i => i !== 0);
-        eligibleIndices.sort(() => Math.random() - 0.5);
-        
-        let blanksCount = 0;
-        let puzzleArray = [...wordArray];
-        
-        for (let i = 0; i < eligibleIndices.length; i++) {
-            if (blanksCount < maxBlanks && Math.random() > 0.4) {
-                puzzleArray[eligibleIndices[i]] = "_";
-                blanksCount++;
-            }
-        }
-        
-        if (blanksCount === 0 && eligibleIndices.length > 0) {
-            puzzleArray[eligibleIndices[0]] = "_";
+        let puzzleArray = wordArray.map(char => {
+            // Randomly decide if a letter should be hidden or shown
+            // Adjust probability (0.5 means roughly 50% letters hidden)
+            return Math.random() > 0.4 ? "_" : char; 
+        });
+
+        // Ensure at least one blank exists if word length > 1
+        if (!puzzleArray.includes("_") && word.length > 1) {
+             const randIndex = Math.floor(Math.random() * word.length);
+             puzzleArray[randIndex] = "_";
         }
         
         return puzzleArray.join('');
@@ -477,36 +490,38 @@
         const puzzleEl = document.getElementById('puzzle-text');
         
         if (currentWordData) {
-            hintEl.innerText = currentWordData.meaning; 
+            
+            // CHANGED: Hint text logic based on whether it is Synonym or Antonym
+            const relationType = currentWordData.type === 'synonym' ? 'Synonym' : 'Antonym';
+            hintEl.innerHTML = `${relationType} of <b>'${currentWordData.meaning}'</b>`;
             
             if (questionNumberEl) {
+                // Use the Q number from JSON or default
                 const qNum = currentWordData.question_number || (scoreRight + scoreWrong + 1);
                 questionNumberEl.innerText = "Question: " + qNum;
             }
             
-            // Generate puzzle state if missing
             if (!currentPuzzleState) {
                 currentPuzzleState = generatePuzzleState(currentWord);
             }
 
-            // --- DISPLAY LOGIC MODIFIED ---
+            // CHANGED: Display logic
             if (isRevealed) {
-                // Show the "Hint" version (e.g., A_d_m_n)
-                puzzleEl.innerText = currentPuzzleState;
+                // CHANGED: On reveal, show FULL WORD
+                puzzleEl.innerText = currentWord;
                 document.getElementById('btn-reveal').classList.add('hidden');
             } else {
-                // Show the "Hard Mode" version (e.g., A??????)
-                // First char + questions marks for the rest
-                const maskedWord = currentWord.charAt(0) + "?".repeat(currentWord.length - 1);
-                puzzleEl.innerText = maskedWord;
+                // CHANGED: Before reveal, show random blanks
+                puzzleEl.innerText = currentPuzzleState;
                 document.getElementById('btn-reveal').classList.remove('hidden');
             }
         }
     }
 
+    // CHANGED: Reveal behavior to show full word immediately
     function revealPuzzle() {
         isRevealed = true;
-        showWordInfo(); // Call showWordInfo to update the text based on isRevealed = true
+        showWordInfo(); 
     }
 
     function nextWord() {
@@ -516,10 +531,20 @@
         document.getElementById('btn-submit').classList.remove('hidden');
         document.getElementById('btn-next').classList.add('hidden');
         
-        currentWordData = wordList[Math.floor(Math.random() * wordList.length)];
+        // CHANGED: Logic to randomly select from Antonym OR Synonym list
+        const isSynonymRound = Math.random() < 0.5; // 50% chance
+        let listToUse = isSynonymRound ? synonymList : antonymList;
+        
+        // Safety check if list is empty
+        if (listToUse.length === 0) listToUse = isSynonymRound ? antonymList : synonymList;
+
+        const randomEntry = listToUse[Math.floor(Math.random() * listToUse.length)];
+        
+        // Clone data and add 'type' so we know how to display the hint
+        currentWordData = { ...randomEntry, type: isSynonymRound ? 'synonym' : 'antonym' };
         currentWord = currentWordData.word;
         
-        // RESET for new word
+        // RESET
         currentPuzzleState = "";
         isRevealed = false; 
         
@@ -542,13 +567,12 @@
         if (!attempt) return;
 
         if (attempt === currentWord.toLowerCase()) {
-            // 5X POINTS LOGIC
             if (!isRevealed) {
-                scoreRight += 5; // Updated to 5
+                scoreRight += 5; 
                 feedback.innerHTML = "🌟 <b>5X POINTS!</b> Amazing job! 🌟";
                 feedback.style.color = "var(--primary)";
             } else {
-                scoreRight++;
+                scoreRight++; 
                 feedback.innerText = "🎉 Correct! Good work.";
                 feedback.style.color = "var(--success)";
             }
@@ -560,7 +584,7 @@
 
         updateStats();
         
-        // Always reveal full word on completion
+        // Reveal word on completion
         document.getElementById('puzzle-text').innerText = currentWord;
         document.getElementById('btn-reveal').classList.add('hidden');
 
