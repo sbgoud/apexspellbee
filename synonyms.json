@@ -1,1 +1,973 @@
 
+[
+  {
+    "question_number": 1001,
+    "word": "Above",
+    "meaning": "Aloft"
+  },
+  {
+    "question_number": 1002,
+    "word": "Aloft",
+    "meaning": "Above"
+  },
+  {
+    "question_number": 1003,
+    "word": "Abhor",
+    "meaning": "Hate"
+  },
+  {
+    "question_number": 1004,
+    "word": "Hate",
+    "meaning": "Abhor"
+  },
+  {
+    "question_number": 1005,
+    "word": "Absent",
+    "meaning": "Away"
+  },
+  {
+    "question_number": 1006,
+    "word": "Away",
+    "meaning": "Absent"
+  },
+  {
+    "question_number": 1007,
+    "word": "Abolish",
+    "meaning": "Cancel"
+  },
+  {
+    "question_number": 1008,
+    "word": "Cancel",
+    "meaning": "Abolish"
+  },
+  {
+    "question_number": 1009,
+    "word": "Abrupt",
+    "meaning": "Sudden"
+  },
+  {
+    "question_number": 1010,
+    "word": "Sudden",
+    "meaning": "Abrupt"
+  },
+  {
+    "question_number": 1011,
+    "word": "Absolve",
+    "meaning": "Acquit"
+  },
+  {
+    "question_number": 1012,
+    "word": "Acquit",
+    "meaning": "Absolve"
+  },
+  {
+    "question_number": 1013,
+    "word": "Absurd",
+    "meaning": "Foolish"
+  },
+  {
+    "question_number": 1014,
+    "word": "Foolish",
+    "meaning": "Absurd"
+  },
+  {
+    "question_number": 1015,
+    "word": "Accept",
+    "meaning": "Receive"
+  },
+  {
+    "question_number": 1016,
+    "word": "Receive",
+    "meaning": "Accept"
+  },
+  {
+    "question_number": 1017,
+    "word": "Active",
+    "meaning": "Frisky"
+  },
+  {
+    "question_number": 1018,
+    "word": "Frisky",
+    "meaning": "Active"
+  },
+  {
+    "question_number": 1019,
+    "word": "Admire",
+    "meaning": "Praise"
+  },
+  {
+    "question_number": 1020,
+    "word": "Praise",
+    "meaning": "Admire"
+  },
+  {
+    "question_number": 1021,
+    "word": "Admit",
+    "meaning": "Accept"
+  },
+  {
+    "question_number": 1022,
+    "word": "Accept",
+    "meaning": "Admit"
+  },
+  {
+    "question_number": 1023,
+    "word": "Afraid",
+    "meaning": "Scared"
+  },
+  {
+    "question_number": 1024,
+    "word": "Scared",
+    "meaning": "Afraid"
+  },
+  {
+    "question_number": 1025,
+    "word": "Agree",
+    "meaning": "Concur"
+  },
+  {
+    "question_number": 1026,
+    "word": "Concur",
+    "meaning": "Agree"
+  },
+  {
+    "question_number": 1027,
+    "word": "Alike",
+    "meaning": "Similar"
+  },
+  {
+    "question_number": 1028,
+    "word": "Similar",
+    "meaning": "Alike"
+  },
+  {
+    "question_number": 1029,
+    "word": "Amuse",
+    "meaning": "Delight"
+  },
+  {
+    "question_number": 1030,
+    "word": "Delight",
+    "meaning": "Amuse"
+  },
+  {
+    "question_number": 1031,
+    "word": "Ancient",
+    "meaning": "Antique"
+  },
+  {
+    "question_number": 1032,
+    "word": "Antique",
+    "meaning": "Ancient"
+  },
+  {
+    "question_number": 1033,
+    "word": "Annoy",
+    "meaning": "Irritate"
+  },
+  {
+    "question_number": 1034,
+    "word": "Irritate",
+    "meaning": "Annoy"
+  },
+  {
+    "question_number": 1035,
+    "word": "Answer",
+    "meaning": "Reply"
+  },
+  {
+    "question_number": 1036,
+    "word": "Reply",
+    "meaning": "Answer"
+  },
+  {
+    "question_number": 1037,
+    "word": "Apart",
+    "meaning": "Alone"
+  },
+  {
+    "question_number": 1038,
+    "word": "Alone",
+    "meaning": "Apart"
+  },
+  {
+    "question_number": 1039,
+    "word": "Argue",
+    "meaning": "Dispute"
+  },
+  {
+    "question_number": 1040,
+    "word": "Dispute",
+    "meaning": "Argue"
+  },
+  {
+    "question_number": 1041,
+    "word": "Arrive",
+    "meaning": "Reach"
+  },
+  {
+    "question_number": 1042,
+    "word": "Reach",
+    "meaning": "Arrive"
+  },
+  {
+    "question_number": 1043,
+    "word": "Ascend",
+    "meaning": "Mount"
+  },
+  {
+    "question_number": 1044,
+    "word": "Mount",
+    "meaning": "Ascend"
+  },
+  {
+    "question_number": 1045,
+    "word": "Asleep",
+    "meaning": "Dormant"
+  },
+  {
+    "question_number": 1046,
+    "word": "Dormant",
+    "meaning": "Asleep"
+  },
+  {
+    "question_number": 1047,
+    "word": "Attach",
+    "meaning": "Join"
+  },
+  {
+    "question_number": 1048,
+    "word": "Join",
+    "meaning": "Attach"
+  },
+  {
+    "question_number": 1049,
+    "word": "Attack",
+    "meaning": "Ambush"
+  },
+  {
+    "question_number": 1050,
+    "word": "Ambush",
+    "meaning": "Attack"
+  },
+  {
+    "question_number": 1051,
+    "word": "Baffle",
+    "meaning": "Confuse"
+  },
+  {
+    "question_number": 1052,
+    "word": "Confuse",
+    "meaning": "Baffle"
+  },
+  {
+    "question_number": 1053,
+    "word": "Before",
+    "meaning": "Ahead"
+  },
+  {
+    "question_number": 1054,
+    "word": "Ahead",
+    "meaning": "Before"
+  },
+  {
+    "question_number": 1055,
+    "word": "Below",
+    "meaning": "Beneath"
+  },
+  {
+    "question_number": 1056,
+    "word": "Beneath",
+    "meaning": "Below"
+  },
+  {
+    "question_number": 1057,
+    "word": "Brave",
+    "meaning": "Bold"
+  },
+  {
+    "question_number": 1058,
+    "word": "Bold",
+    "meaning": "Brave"
+  },
+  {
+    "question_number": 1059,
+    "word": "Break",
+    "meaning": "Smash"
+  },
+  {
+    "question_number": 1060,
+    "word": "Smash",
+    "meaning": "Break"
+  },
+  {
+    "question_number": 1061,
+    "word": "Bright",
+    "meaning": "Brilliant"
+  },
+  {
+    "question_number": 1062,
+    "word": "Brilliant",
+    "meaning": "Bright"
+  },
+  {
+    "question_number": 1063,
+    "word": "Broad",
+    "meaning": "Wide"
+  },
+  {
+    "question_number": 1064,
+    "word": "Wide",
+    "meaning": "Broad"
+  },
+  {
+    "question_number": 1065,
+    "word": "Build",
+    "meaning": "Create"
+  },
+  {
+    "question_number": 1066,
+    "word": "Create",
+    "meaning": "Build"
+  },
+  {
+    "question_number": 1067,
+    "word": "Calm",
+    "meaning": "Serene"
+  },
+  {
+    "question_number": 1068,
+    "word": "Serene",
+    "meaning": "Calm"
+  },
+  {
+    "question_number": 1069,
+    "word": "Cease",
+    "meaning": "Stop"
+  },
+  {
+    "question_number": 1070,
+    "word": "Stop",
+    "meaning": "Cease"
+  },
+  {
+    "question_number": 1071,
+    "word": "Certainly",
+    "meaning": "Surely"
+  },
+  {
+    "question_number": 1072,
+    "word": "Surely",
+    "meaning": "Certainly"
+  },
+  {
+    "question_number": 1073,
+    "word": "Cloudy",
+    "meaning": "Foggy"
+  },
+  {
+    "question_number": 1074,
+    "word": "Foggy",
+    "meaning": "Cloudy"
+  },
+  {
+    "question_number": 1075,
+    "word": "Conceal",
+    "meaning": "Hide"
+  },
+  {
+    "question_number": 1076,
+    "word": "Hide",
+    "meaning": "Conceal"
+  },
+  {
+    "question_number": 1077,
+    "word": "Connect",
+    "meaning": "Attach"
+  },
+  {
+    "question_number": 1078,
+    "word": "Attach",
+    "meaning": "Connect"
+  },
+  {
+    "question_number": 1079,
+    "word": "Costly",
+    "meaning": "Pricey"
+  },
+  {
+    "question_number": 1080,
+    "word": "Pricey",
+    "meaning": "Costly"
+  },
+  {
+    "question_number": 1081,
+    "word": "Courage",
+    "meaning": "Bravery"
+  },
+  {
+    "question_number": 1082,
+    "word": "Bravery",
+    "meaning": "Courage"
+  },
+  {
+    "question_number": 1083,
+    "word": "Create",
+    "meaning": "Make"
+  },
+  {
+    "question_number": 1084,
+    "word": "Make",
+    "meaning": "Create"
+  },
+  {
+    "question_number": 1085,
+    "word": "Damage",
+    "meaning": "Impair"
+  },
+  {
+    "question_number": 1086,
+    "word": "Impair",
+    "meaning": "Damage"
+  },
+  {
+    "question_number": 1087,
+    "word": "Decline",
+    "meaning": "Reject"
+  },
+  {
+    "question_number": 1088,
+    "word": "Reject",
+    "meaning": "Decline"
+  },
+  {
+    "question_number": 1089,
+    "word": "Decrease",
+    "meaning": "Reduce"
+  },
+  {
+    "question_number": 1090,
+    "word": "Reduce",
+    "meaning": "Decrease"
+  },
+  {
+    "question_number": 1091,
+    "word": "Defend",
+    "meaning": "Protect"
+  },
+  {
+    "question_number": 1092,
+    "word": "Protect",
+    "meaning": "Defend"
+  },
+  {
+    "question_number": 1093,
+    "word": "Delicious",
+    "meaning": "Tasty"
+  },
+  {
+    "question_number": 1094,
+    "word": "Tasty",
+    "meaning": "Delicious"
+  },
+  {
+    "question_number": 1095,
+    "word": "Destroy",
+    "meaning": "Demolish"
+  },
+  {
+    "question_number": 1096,
+    "word": "Demolish",
+    "meaning": "Destroy"
+  },
+  {
+    "question_number": 1097,
+    "word": "Distant",
+    "meaning": "Remote"
+  },
+  {
+    "question_number": 1098,
+    "word": "Remote",
+    "meaning": "Distant"
+  },
+  {
+    "question_number": 1099,
+    "word": "Divide",
+    "meaning": "Split"
+  },
+  {
+    "question_number": 1100,
+    "word": "Split",
+    "meaning": "Divide"
+  },
+  {
+    "question_number": 1101,
+    "word": "Domestic",
+    "meaning": "Internal"
+  },
+  {
+    "question_number": 1102,
+    "word": "Internal",
+    "meaning": "Domestic"
+  },
+  {
+    "question_number": 1103,
+    "word": "Excited",
+    "meaning": "Thrilled"
+  },
+  {
+    "question_number": 1104,
+    "word": "Thrilled",
+    "meaning": "Excited"
+  },
+  {
+    "question_number": 1105,
+    "word": "Extreme",
+    "meaning": "Utmost"
+  },
+  {
+    "question_number": 1106,
+    "word": "Utmost",
+    "meaning": "Extreme"
+  },
+  {
+    "question_number": 1107,
+    "word": "Feeble",
+    "meaning": "Weak"
+  },
+  {
+    "question_number": 1108,
+    "word": "Weak",
+    "meaning": "Feeble"
+  },
+  {
+    "question_number": 1109,
+    "word": "Float",
+    "meaning": "Drift"
+  },
+  {
+    "question_number": 1110,
+    "word": "Drift",
+    "meaning": "Float"
+  },
+  {
+    "question_number": 1111,
+    "word": "Forbid",
+    "meaning": "Prohibit"
+  },
+  {
+    "question_number": 1112,
+    "word": "Prohibit",
+    "meaning": "Forbid"
+  },
+  {
+    "question_number": 1113,
+    "word": "General",
+    "meaning": "Normal"
+  },
+  {
+    "question_number": 1114,
+    "word": "Normal",
+    "meaning": "General"
+  },
+  {
+    "question_number": 1115,
+    "word": "Gentle",
+    "meaning": "Kind"
+  },
+  {
+    "question_number": 1116,
+    "word": "Kind",
+    "meaning": "Gentle"
+  },
+  {
+    "question_number": 1117,
+    "word": "Guilty",
+    "meaning": "Sinful"
+  },
+  {
+    "question_number": 1118,
+    "word": "Sinful",
+    "meaning": "Guilty"
+  },
+  {
+    "question_number": 1119,
+    "word": "Harsh",
+    "meaning": "Rough"
+  },
+  {
+    "question_number": 1120,
+    "word": "Rough",
+    "meaning": "Harsh"
+  },
+  {
+    "question_number": 1121,
+    "word": "Hazard",
+    "meaning": "Danger"
+  },
+  {
+    "question_number": 1122,
+    "word": "Danger",
+    "meaning": "Hazard"
+  },
+  {
+    "question_number": 1123,
+    "word": "Include",
+    "meaning": "Involve"
+  },
+  {
+    "question_number": 1124,
+    "word": "Involve",
+    "meaning": "Include"
+  },
+  {
+    "question_number": 1125,
+    "word": "Increase",
+    "meaning": "Grow"
+  },
+  {
+    "question_number": 1126,
+    "word": "Grow",
+    "meaning": "Increase"
+  },
+  {
+    "question_number": 1127,
+    "word": "Innocent",
+    "meaning": "Guiltless"
+  },
+  {
+    "question_number": 1128,
+    "word": "Guiltless",
+    "meaning": "Innocent"
+  },
+  {
+    "question_number": 1129,
+    "word": "Insult",
+    "meaning": "Abuse"
+  },
+  {
+    "question_number": 1130,
+    "word": "Abuse",
+    "meaning": "Insult"
+  },
+  {
+    "question_number": 1131,
+    "word": "Liberty",
+    "meaning": "Freedom"
+  },
+  {
+    "question_number": 1132,
+    "word": "Freedom",
+    "meaning": "Liberty"
+  },
+  {
+    "question_number": 1133,
+    "word": "Lovely",
+    "meaning": "Pretty"
+  },
+  {
+    "question_number": 1134,
+    "word": "Pretty",
+    "meaning": "Lovely"
+  },
+  {
+    "question_number": 1135,
+    "word": "Mean",
+    "meaning": "Greedy"
+  },
+  {
+    "question_number": 1136,
+    "word": "Greedy",
+    "meaning": "Mean"
+  },
+  {
+    "question_number": 1137,
+    "word": "Pious",
+    "meaning": "Devout"
+  },
+  {
+    "question_number": 1138,
+    "word": "Devout",
+    "meaning": "Pious"
+  },
+  {
+    "question_number": 1139,
+    "word": "Private",
+    "meaning": "Personal"
+  },
+  {
+    "question_number": 1140,
+    "word": "Personal",
+    "meaning": "Private"
+  },
+  {
+    "question_number": 1141,
+    "word": "Queer",
+    "meaning": "Strange"
+  },
+  {
+    "question_number": 1142,
+    "word": "Strange",
+    "meaning": "Queer"
+  },
+  {
+    "question_number": 1143,
+    "word": "Quick",
+    "meaning": "Swift"
+  },
+  {
+    "question_number": 1144,
+    "word": "Swift",
+    "meaning": "Quick"
+  },
+  {
+    "question_number": 1145,
+    "word": "Quiet",
+    "meaning": "Silent"
+  },
+  {
+    "question_number": 1146,
+    "word": "Silent",
+    "meaning": "Quiet"
+  },
+  {
+    "question_number": 1147,
+    "word": "Reduce",
+    "meaning": "Shrink"
+  },
+  {
+    "question_number": 1148,
+    "word": "Shrink",
+    "meaning": "Reduce"
+  },
+  {
+    "question_number": 1149,
+    "word": "Regret",
+    "meaning": "Grieve"
+  },
+  {
+    "question_number": 1150,
+    "word": "Grieve",
+    "meaning": "Regret"
+  },
+  {
+    "question_number": 1151,
+    "word": "Reject",
+    "meaning": "Refuse"
+  },
+  {
+    "question_number": 1152,
+    "word": "Refuse",
+    "meaning": "Reject"
+  },
+  {
+    "question_number": 1153,
+    "word": "Repair",
+    "meaning": "Mend"
+  },
+  {
+    "question_number": 1154,
+    "word": "Mend",
+    "meaning": "Repair"
+  },
+  {
+    "question_number": 1155,
+    "word": "Repeal",
+    "meaning": "Cancel"
+  },
+  {
+    "question_number": 1156,
+    "word": "Cancel",
+    "meaning": "Repeal"
+  },
+  {
+    "question_number": 1157,
+    "word": "Risky",
+    "meaning": "Unsafe"
+  },
+  {
+    "question_number": 1158,
+    "word": "Unsafe",
+    "meaning": "Risky"
+  },
+  {
+    "question_number": 1159,
+    "word": "Rough",
+    "meaning": "Coarse"
+  },
+  {
+    "question_number": 1160,
+    "word": "Coarse",
+    "meaning": "Rough"
+  },
+  {
+    "question_number": 1161,
+    "word": "Rural",
+    "meaning": "Country"
+  },
+  {
+    "question_number": 1162,
+    "word": "Country",
+    "meaning": "Rural"
+  },
+  {
+    "question_number": 1163,
+    "word": "Saintly",
+    "meaning": "Virtuous"
+  },
+  {
+    "question_number": 1164,
+    "word": "Virtuous",
+    "meaning": "Saintly"
+  },
+  {
+    "question_number": 1165,
+    "word": "Sane",
+    "meaning": "Rational"
+  },
+  {
+    "question_number": 1166,
+    "word": "Rational",
+    "meaning": "Sane"
+  },
+  {
+    "question_number": 1167,
+    "word": "Secure",
+    "meaning": "Safe"
+  },
+  {
+    "question_number": 1168,
+    "word": "Safe",
+    "meaning": "Secure"
+  },
+  {
+    "question_number": 1169,
+    "word": "Solace",
+    "meaning": "Comfort"
+  },
+  {
+    "question_number": 1170,
+    "word": "Comfort",
+    "meaning": "Solace"
+  },
+  {
+    "question_number": 1171,
+    "word": "Solemn",
+    "meaning": "Serious"
+  },
+  {
+    "question_number": 1172,
+    "word": "Serious",
+    "meaning": "Solemn"
+  },
+  {
+    "question_number": 1173,
+    "word": "Spurious",
+    "meaning": "Fake"
+  },
+  {
+    "question_number": 1174,
+    "word": "Fake",
+    "meaning": "Spurious"
+  },
+  {
+    "question_number": 1175,
+    "word": "Support",
+    "meaning": "Assist"
+  },
+  {
+    "question_number": 1176,
+    "word": "Assist",
+    "meaning": "Support"
+  },
+  {
+    "question_number": 1177,
+    "word": "Suspect",
+    "meaning": "Doubt"
+  },
+  {
+    "question_number": 1178,
+    "word": "Doubt",
+    "meaning": "Suspect"
+  },
+  {
+    "question_number": 1179,
+    "word": "Terrible",
+    "meaning": "Horrible"
+  },
+  {
+    "question_number": 1180,
+    "word": "Horrible",
+    "meaning": "Terrible"
+  },
+  {
+    "question_number": 1181,
+    "word": "Thrive",
+    "meaning": "Prosper"
+  },
+  {
+    "question_number": 1182,
+    "word": "Prosper",
+    "meaning": "Thrive"
+  },
+  {
+    "question_number": 1183,
+    "word": "Throw",
+    "meaning": "Cast"
+  },
+  {
+    "question_number": 1184,
+    "word": "Cast",
+    "meaning": "Throw"
+  },
+  {
+    "question_number": 1185,
+    "word": "Utterly",
+    "meaning": "Totally"
+  },
+  {
+    "question_number": 1186,
+    "word": "Totally",
+    "meaning": "Utterly"
+  },
+  {
+    "question_number": 1187,
+    "word": "Vanish",
+    "meaning": "Disappear"
+  },
+  {
+    "question_number": 1188,
+    "word": "Disappear",
+    "meaning": "Vanish"
+  },
+  {
+    "question_number": 1189,
+    "word": "Veteran",
+    "meaning": "Expert"
+  },
+  {
+    "question_number": 1190,
+    "word": "Expert",
+    "meaning": "Veteran"
+  },
+  {
+    "question_number": 1191,
+    "word": "Wealthy",
+    "meaning": "Affluent"
+  },
+  {
+    "question_number": 1192,
+    "word": "Affluent",
+    "meaning": "Wealthy"
+  },
+  {
+    "question_number": 1193,
+    "word": "Wicked",
+    "meaning": "Immoral"
+  },
+  {
+    "question_number": 1194,
+    "word": "Immoral",
+    "meaning": "Wicked"
+  }
+]
